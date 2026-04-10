@@ -1,15 +1,11 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Gerador de Landing Page</title>
-
 </head>
-
 <body>
-
 <style>
 
 body{
@@ -26,10 +22,16 @@ margin:auto;
 padding:40px;
 }
 
+label{
+margin-top:15px;
+display:block;
+font-weight:bold;
+}
+
 input, textarea{
 width:100%;
 padding:12px;
-margin-top:10px;
+margin-top:5px;
 border:none;
 border-radius:5px;
 }
@@ -49,22 +51,61 @@ cursor:pointer;
 margin-top:40px;
 background:white;
 color:black;
-padding:30px;
 border-radius:8px;
+overflow:hidden;
+}
+
+/* landing preview */
+
+.hero{
+padding:60px;
+text-align:center;
+}
+
+.hero img{
+width:120px;
+height:120px;
+border-radius:50%;
+object-fit:cover;
+margin-bottom:20px;
+}
+
+.hero h1{
+margin-bottom:10px;
+}
+
+.hero p{
+max-width:500px;
+margin:auto;
+margin-bottom:20px;
 }
 
 </style>
+
+
 
 <div class="container">
 
 <h1>Criar Landing Page Automática</h1>
 <p>Preencha os dados abaixo e veja sua landing page ser criada.</p>
 
+<label>Título</label>
 <input id="titulo" placeholder="Título da página">
 
+<label>Descrição</label>
 <textarea id="descricao" placeholder="Descrição do produto"></textarea>
 
-<input id="botao" placeholder="Texto do botão (Ex: Comprar Agora)">
+<label>Texto do Botão</label>
+<input id="botao" placeholder="Ex: Comprar Agora">
+
+<label>Imagem / Perfil</label>
+<input type="file" id="imagem">
+
+<label>Cor de Fundo</label>
+<input type="color" id="corFundo" value="#ffffff">
+
+<label>Cor do Botão</label>
+<input type="color" id="corBotao" value="#00c896">
 
 <button onclick="gerarLanding()">Gerar Landing Page</button>
 
@@ -79,14 +120,37 @@ function gerarLanding(){
 let titulo = document.getElementById("titulo").value
 let descricao = document.getElementById("descricao").value
 let botao = document.getElementById("botao").value
+let corFundo = document.getElementById("corFundo").value
+let corBotao = document.getElementById("corBotao").value
+
+let imagemInput = document.getElementById("imagem")
+
+let imagemURL = ""
+
+if(imagemInput.files.length > 0){
+imagemURL = URL.createObjectURL(imagemInput.files[0])
+}
 
 let landing = `
-<section style="text-align:center;padding:60px">
+<section class="hero" style="background:${corFundo}">
+
+${imagemURL ? `<img src="${imagemURL}">` : ""}
+
 <h1>${titulo}</h1>
-<p style="max-width:500px;margin:auto">${descricao}</p>
-<button style="padding:14px 25px;background:#00c896;border:none;border-radius:6px;color:white;font-size:16px">
+
+<p>${descricao}</p>
+
+<button style="
+padding:14px 28px;
+background:${corBotao};
+border:none;
+color:white;
+border-radius:6px;
+font-size:16px;
+">
 ${botao}
 </button>
+
 </section>
 `
 
