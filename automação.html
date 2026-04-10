@@ -6,8 +6,8 @@
 <title>Landing Builder</title>
 </head>
 <body>
-  
 <style>
+
 body{
 font-family:Arial;
 background:#0f0f0f;
@@ -23,24 +23,23 @@ padding:40px;
 }
 
 label{
-margin-top:15px;
 display:block;
-font-weight:bold;
+margin-top:15px;
 }
 
 input, textarea{
 width:100%;
-padding:12px;
+padding:10px;
 margin-top:5px;
-border:none;
 border-radius:6px;
+border:none;
 }
 
 button{
 margin-top:20px;
 padding:14px 20px;
-border:none;
 background:#00c896;
+border:none;
 color:white;
 font-weight:bold;
 border-radius:6px;
@@ -55,30 +54,6 @@ border-radius:10px;
 overflow:hidden;
 }
 
-.capa{
-height:220px;
-background-size:cover;
-background-position:center;
-}
-
-.perfil{
-text-align:center;
-margin-top:-60px;
-}
-
-.perfil img{
-width:120px;
-height:120px;
-border-radius:50%;
-border:5px solid white;
-object-fit:cover;
-}
-
-.hero{
-text-align:center;
-padding:30px;
-}
-
 .servicos{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -87,21 +62,13 @@ padding:40px;
 }
 
 .card{
+background:#f3f3f3;
 padding:20px;
-background:#f5f5f5;
 border-radius:8px;
 text-align:center;
 }
 
-footer{
-text-align:center;
-padding:20px;
-background:#111;
-color:white;
-}
-
 </style>
-
 
 
 <div class="container">
@@ -127,7 +94,7 @@ color:white;
 <input type="file" id="capa">
 
 <label>Cor principal</label>
-<input type="color" id="corPrincipal" value="#00c896">
+<input type="color" id="cor">
 
 <label>Serviço 1</label>
 <input id="serv1">
@@ -149,15 +116,9 @@ color:white;
 
 let htmlGerado=""
 
-function fileToBase64(file){
-return new Promise((resolve)=>{
-let reader=new FileReader()
-reader.onload=()=>resolve(reader.result)
-reader.readAsDataURL(ile)
-})
-}
+function gerarLanding(){
 
-async function gerarLanding(){
+try{
 
 let titulo=document.getElementById("titulo").value
 let slogan=document.getElementById("slogan").value
@@ -168,7 +129,7 @@ let serv1=document.getElementById("serv1").value
 let serv2=document.getElementById("serv2").value
 let serv3=document.getElementById("serv3").value
 
-let cor=document.getElementById("corPrincipal").value
+let cor=document.getElementById("cor").value
 
 let perfilInput=document.getElementById("perfil")
 let capaInput=document.getElementById("capa")
@@ -177,11 +138,11 @@ let perfilURL=""
 let capaURL=""
 
 if(perfilInput.files[0]){
-perfilURL=await fileToBase64(perfilInput.files[0])
+perfilURL=URL.createObjectURL(perfilInput.files[0])
 }
 
 if(capaInput.files[0]){
-capaURL=await fileToBase64(capaInput.files[0])
+capaURL=URL.createObjectURL(capaInput.files[0])
 }
 
 htmlGerado=`
@@ -215,6 +176,7 @@ width:120px;
 height:120px;
 border-radius:50%;
 border:5px solid white;
+object-fit:cover;
 }
 
 .hero{
@@ -241,7 +203,6 @@ padding:40px;
 padding:20px;
 background:#f5f5f5;
 border-radius:8px;
-text-align:center;
 }
 
 footer{
@@ -267,6 +228,7 @@ color:white;
 
 <h1>${titulo}</h1>
 <h3>${slogan}</h3>
+
 <p>${descricao}</p>
 
 <button>${botao}</button>
@@ -289,9 +251,20 @@ color:white;
 
 document.getElementById("preview").innerHTML=htmlGerado
 
+}catch(e){
+
+alert("Erro ao gerar página")
+
+}
+
 }
 
 function baixarHTML(){
+
+if(htmlGerado===""){
+alert("Primeiro gere a página")
+return
+}
 
 let blob=new Blob([htmlGerado],{type:"text/html"})
 
